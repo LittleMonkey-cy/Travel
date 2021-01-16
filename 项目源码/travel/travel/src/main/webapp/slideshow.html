@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图管理</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <!--    <link rel="stylesheet" href="css/common.css">-->
+
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="js/jquery.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/alert.js"></script>
+    <script src="js/include.js"></script>
+    <script src="js/getParameter.js"></script>
+    <style type="text/css">
+        .sgBtn {
+            width: 135px;
+            height: 35px;
+            line-height: 35px;
+            margin-left: 10px;
+            margin-top: 10px;
+            text-align: center;
+            background-color: #0095D9;
+            color: #FFFFFF;
+            float: left;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<!-- 引入样式文件和动态控制 -->
+
+<title>后台管理界面</title>
+
+
+</head>
+<body>
+
+
+<header id="adminheader"></header>
+
+<div class="container-fluid">
+    <div class="row">
+        <div id="mangement"></div>
+
+        <!--左边菜单栏-->
+        <div class="col-sm-10">
+
+            <div class="panel panel-default">
+                <div class="panel-heading ">
+                    轮播图管理
+                </div>
+                <!--                <div style="margin-top: 15px; margin-right: 14px; float: right">-->
+                <!--                    <button class="btn btn-primary" href="javascript:void(0); "  id="DelAll" >批量删除</button>-->
+                <!--                </div>-->
+                <div class="panel-body">
+                </div>
+
+            </div>
+
+            <!--
+                列表展示
+            -->
+            <div class="table-responsive">
+                <form id="registerForm" action="user">
+                    <table border="1" class="table table-bordered table-hover " id="admin">
+                        <tr class="success">
+                            <th><input type="checkbox" id="firstCb"></th>
+                            <th>编号</th>
+                            <th>姓名</th>
+                            <th>电话</th>
+                            <th>性别</th>
+                            <th>生日</th>
+                            <th>邮箱</th>
+                            <th>操作</th>
+                        </tr>
+
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <td>1</td>
+                            <td>张三</td>
+                            <td>男</td>
+                            <td>20</td>
+                            <td>广东</td>
+
+                            <td>zs@qq.com</td>
+                            <td id="btn"><a class="btn btn-default  glyphicon glyphicon-pencil" href="update.html"></a>&nbsp;
+                                <a class="btn btn-default  glyphicon glyphicon-plus" href="" id="del"></a>
+
+                                &nbsp;<a class="btn btn-default  glyphicon glyphicon-trash" href=""></a></td>
+                        </tr>
+
+                    </table>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- 底部页脚部分 -->
+    <div class="footer">
+        <p class="text-center">
+        </p>
+    </div>
+
+    <script>
+        $(function () {
+
+            $.get("route/slideshow", {}, function (rb) {
+                var lis = "";
+                var table = '   <tr class="success">\n' +
+                    '<th>编号</th>\n' +
+                    '                        <th>图片</th>\n' +
+                    '                        <th>操作</th>\n' +
+                    '                    </tr>';
+                lis += table;
+                for (var i = 0; i < rb.length; i++) {
+
+                    var li = '<tr>\n' +
+
+                        '  <td>' + (i + 1) + '</td>\n' +
+                        '                    <td width="940px;" height="220px"><img src="' + rb[i].bigPic + '" alt="" style=" width: 900px; height: 200px ;padding-left: 40px;"></td>\n' +
+                        '                    <td><a class="btn btn-default  glyphicon glyphicon-pencil" href="updateslide.html?rid=' + rb[i].rid + '"></a>' +
+                        '                </tr>';
+                    lis += li;
+                }
+                $("#admin").html(lis);
+
+
+            })
+
+        })
+
+
+    </script>
+</div>
+</div>
+</body>
+</html>

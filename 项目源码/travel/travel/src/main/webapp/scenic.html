@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>景点管理</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <link rel="stylesheet" href="css/search.css">
+    <!--    <link rel="stylesheet" href="css/common.css">-->
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="js/jquery.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/alert.js"></script>
+    <script src="js/include.js"></script>
+    <script src="js/getParameter.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<header id="adminheader"></header>
+<div class="container-fluid">
+    <div class="row">
+        <div id="mangement"></div>
+
+        <!--左边菜单栏-->
+        <div class="col-sm-10">
+
+            <div class="panel panel-default">
+                <div class="panel-heading ">
+                    景点管理
+                </div>
+                <div style="margin-top: 15px; margin-right: 14px; float: right">
+                    <button class="btn btn-primary" href="javascript:void(0); " id="DelAll">批量删除</button>
+                </div>
+                <div class="panel-body">
+                    <form role="form" class="form-inline">
+                        <div class="form-group">
+                            <label for="rname">名称</label>
+                            <input type="text" class="form-control" id="rname" placeholder="请输入名称">
+                        </div>
+
+                        <div class="form-group">
+                            <a href="javascript:;" id="seach_btn" class="btn btn-default glyphicon glyphicon-search"
+                               style="padding-bottom: 7px;">&nbsp;搜索</button></a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!--
+                列表展示
+            -->
+            <div class="table-responsive">
+                <form id="registerForm" action="user">
+                    <table border="1" class="table table-bordered table-hover " id="admin">
+                        <tr class="success">
+                            <th><input type="checkbox" id="firstCb"></th>
+                            <th>编号</th>
+                            <th>名称</th>
+                            <th>价格</th>
+                            <th>时间</th>
+                            <th>主题景点</th>
+                            <th>收藏</th>
+                            <th>操作</th>
+                        </tr>
+
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <td>1</td>
+                            <td style="width: 350px; overflow: hidden">【重走丝路•漫游宁夏】银川西部影视城 穆民新村 中卫沙坡头【品美酒 回族学唱花儿 感悟民俗】
+                            </td>
+                            <td>男</td>
+                            <td width="190px">2020-03-19 01:13:16</td>
+                            <td>广东</td>
+                            <td>zs@qq.com</td>
+                            <td id="btn"><a class="btn btn-default  glyphicon glyphicon-pencil" href="update.html"></a>&nbsp;
+                                <a class="btn btn-default  glyphicon glyphicon-plus" href="" id="del"></a>
+                                &nbsp;<a class="btn btn-default  glyphicon glyphicon-trash" href=""></a></td>
+                        </tr>
+
+                    </table>
+                </form>
+                <div class="page_num_inf" style="font-size: 19px;color: #878787;margin-bottom: 15px; ">
+                    <i style="float: left; width: 4px; background-color: #878787; height: 20px;margin-top: 5px; margin-right: 10px;"></i>
+                    共
+                    <span id="totalPage" style="color: #ff4848;">12</span>页<span id="totalCount"
+                                                                                 style="color: #ff4848;">132</span>条
+                </div>
+                <div class="pageNum" style="margin-bottom: 25px;">
+                    <ul id="pageNum">
+                        <li><a href="">首页</a></li>
+                        <li class="threeword"><a href="#">上一页</a></li>
+                        <li class="curPage"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+
+                        <li class="threeword"><a href="javascript:;">下一页</a></li>
+                        <li class="threeword"><a href="javascript:;">末页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部页脚部分 -->
+    <div class="footer">
+        <p class="text-center">
+        </p>
+    </div>
+
+    <script>
+
+        $(function () {
+            // 加载完发送ajax请求
+            var rname = getParameter("rname");
+            if (rname) {
+                rname = window.decodeURIComponent(rname);
+            }
+            Laod(null, rname);
+        })
+
+        function Laod(currentPage, rname) {
+
+            $.get("route/pageQueryadmin", {currentPage: currentPage, rname: rname}, function (pb) {
+                //解析page数据
+
+                //分页工具条
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+
+                //分页展示
+                var lis = "";
+                var fristPage = '<li onclick="javascript:Laod(' + 1 + ',\'' + rname + '\')"><a href="">首页</a></li>';
+
+                var beforeNum = pb.currentPage - 1;
+                if (beforeNum <= 0) {
+                    beforeNum = 1;
+                }
+                var beforePage = '<li onclick="javascript:Laod(' + beforeNum + ',\'' + rname + '\')" class="threeword"><a href="javascript:void(0)">上一页</a></li>';
+
+                lis += fristPage;
+                lis += beforePage;
+
+                //定义开始和结束的位置
+                var begin;
+                var end;
+
+                //显示10页面
+                if (pb.totalPage < 10) {
+                    //小于10
+                    begin = 1;
+                    end = pb.totalPage;
+                } else {
+                    //超过10页
+                    begin = pb.currentPage - 5;
+                    end = pb.currentPage + 4;
+                    if (begin < 1) {
+                        begin = 1
+                        end = begin + 9;
+                    }
+                    if (end > pb.totalPage) {
+                        end = pb.totalPage;
+                        begin = end - 9;
+                    }
+                }
+
+                for (var i = begin; i <= end; i++) {
+
+                    if (pb.currentPage == i) {
+                        //创建页面li
+                        var li = '<li class="curPage" onclick="javascript:Laod(' + i + ',\'' + rname + '\')"><a href="javascript:void(0)">' + i + '</a></li>';
+
+                    } else {
+                        //创建页面li
+                        var li = '<li onclick="javascript:Laod(' + i + ',\'' + rname + '\')"><a href="javascript:void(0)">' + i + '</a></li>';
+
+                    }
+                    lis += li;
+                }
+                var nextNum = pb.currentPage + 1;
+                if (nextNum >= pb.totalPage) {
+                    nextNum = pb.totalPage;
+                }
+                var nextPage = '<li class="threeword" onclick="javascript:Laod(' + nextNum + ',\'' + rname + '\')"><a href="javascript:void(0)">下一页</a></li>';
+                var lastPage = '<li class="threeword" onclick="javascript:Laod(' + pb.totalPage + ',\'' + rname + '\')"><a href="javascript:void(0)">尾页</a></li>';
+
+                lis += nextPage;
+                lis += lastPage;
+                $("#pageNum").html(lis);
+
+
+                //刷新
+                var lis = "";
+                var table = '   <tr class="success">\n' +
+                    // 设置表单的表头数据
+                    '                          <th><input type="checkbox" id="ckAll"></th>' +
+                    '<th>编号</th>\n' +
+                    '                        <th>图片</th>\n' +
+                    '                        <th>名称</th>\n' +
+                    '                        <th>价格</th>\n' +
+                    '                        <th>收藏</th>\n' +
+                    '                        <th>操作</th>';
+                lis += table;
+                // alert(pb.list.length);
+                // var num=pb.list.length;
+                var num = (pb.currentPage - 1) * pb.pageSize
+                for (var i = 0; i < pb.list.length; i++) {
+
+                    var start = i + 1;
+
+                    var route = pb.list[i];
+                    // alert(list);
+                    var li = '<tr style="height: 70px;overflow: hidden ; ">\n' +
+                        '                    <th width="50px;"><input type="checkbox" name="rid" value="' + route.rid + '"></th>' +
+
+                        '  <td width="50px;">' + [num + (i + 1)] + '</td>\n' +
+                        '                    <td width="340px;" height="139px;"><img src="' + route.rimage + '" alt="" style=" width: 320px; height: 119px; padding-left:20px;"></td>\n' +
+                        '                    <td style="width: 280px;  padding-left: 5px; padding-right: 9px; " >' + route.rname + '</td>\n' +
+                        '                    <td width="80px;">' + route.price + '</td>\n' +
+
+                        '                    <td width="80px">' + route.rcount + '</td>\n' +
+                        '                    <td><a class="btn btn-default  glyphicon glyphicon-pencil" href="update.html?rid=' + route.rid + '"></a>' +
+                        '&nbsp;<a class="btn btn-default  glyphicon glyphicon-plus" href="scenicadd.html"  ></a>\n' +
+                        '                        &nbsp;<button onclick="Delete(' + route.rid + ')"  type="button" class="btn btn-default  glyphicon glyphicon-trash" > </button>' +
+                        ' &nbsp;<a class="btn btn-default  glyphicon glyphicon-picture" href="addpic.html?rid=' + route.rid + '"></a>' +
+                        '</td>\n' +
+                        '                </tr>';
+                    lis += li;
+                }
+                $("#admin").html(lis);
+
+                //给搜索按钮绑定事件,获取内容
+                $("#seach_btn").click(function () {
+                    var rname = $("#rname").val();
+                    location.href = "http://localhost:8080/travel/scenic.html?rname=" + rname;
+
+                })
+
+
+                document.getElementById("DelAll").onclick = function () {
+
+                    var flag = false;
+                    var cbs = document.getElementsByName("rid");
+                    for (var i = 0; i < cbs.length; i++) {
+                        if (cbs[i].checked) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        myConfirm('系统确认框', '您真的要删除吗？', function (r) {
+                            if (r) {
+                                $.post("route/delall", $("#registerForm").serialize(), function () {
+                                    location.reload();
+                                })
+                            }
+                        })
+                    } else {
+                        alert("请选择删除对象");
+                    }
+
+
+                }
+                //全选全部选
+                // 1.获取第一个id="firstCb"
+                document.getElementById("ckAll").onclick = function () {
+                    //获取所有的cb
+                    var cbs = document.getElementsByName("rid");
+
+                    for (var i = 0; i < cbs.length; i++) {
+                        // 4.设置cbs[i]的checked状态==firstCb.checked
+                        cbs[i].checked = ckAll.checked;
+                    }
+                }
+            })
+            window.scrollTo(0, 0);
+        }
+
+        function Delete(rid) {
+            // alert(234);
+            myConfirm('系统确认框', '您真的忍心删除我吗？', function (r) {
+                if (r) {
+                    $.get("route/del", {rid: rid}, function () {
+                        location.reload();
+                    })
+                }
+            });
+        }
+    </script>
+</div>
+</div>
+</body>
+</html>

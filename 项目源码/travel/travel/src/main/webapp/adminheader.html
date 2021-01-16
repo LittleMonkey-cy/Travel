@@ -1,0 +1,69 @@
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- 头部 start -->
+<header id="adminheader">
+    <nav class="navbar navbar-inverse" role="navigation" style=" background-color:#fc8989;
+    border: none;">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <!--            <ul class="nav navbar-nav navbar-right">-->
+                <!--                <li><a id="span_username">欢迎您,admin</a>-->
+                <!--                </li>-->
+                <!--                <li><a href="javascript:location.href='admin/exitAdmin'" class="glyphicon glyphicon-off">&nbsp;退出</a>-->
+                <!--                </li>-->
+                <!--            </ul>-->
+
+                <div class="shortcut">
+                    <!-- 未登录状态  -->
+                    <div class="login_out">
+                        <a href="adminlogin.html">登录</a>&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:location.href='admin/exitAdmin'" >&nbsp;退出</a>
+
+                    </div>
+                    <!-- 登录状态  -->
+                    <div class="login">
+                        <span id="username"></span>
+<!--                        <span id="span_username"></span>-->
+                        <!--                    <a href="javascript:location.href='admin/exitAdmin'" class="glyphicon glyphicon-off">&nbsp;退出</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+
+     $(function () {
+         //用户名显示
+         $.get("admin/findAdmin", {}, function (seller) {
+             if (seller){
+                 var msg = "欢迎您," + seller.name;
+                 $("#username").html(msg)
+             }
+         });
+     });
+
+
+
+    </script>
+<!-- 头部 end -->
+<!-- 首页导航 -->
+<!--<div class="navitem">-->
+<!--    <ul class="nav" id="category">-->
+<!--        <li class="nav-active"><a href="index.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="route_list.html"></a></li>-->
+<!--        <li><a href="favoriterank.html"></a></li>-->
+<!--    </ul>-->
+<!--</div>-->
+    

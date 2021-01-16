@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>景点增加</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" href="css/register.css">
+	<!--导入jquery-->
+	<style>
+		textarea{
+			padding: 6px 12px;
+			width: 256px;
+			/*line-height: 32px;*/
+			box-sizing: border-box;
+			border-radius: 4px;
+			border: 1px solid #a6a6a6;
+			float: right;
+			margin-bottom: 10px;
+		}
+		.rg_layout .rg_form {
+
+			height: auto; !important;
+			background-color: #fff;
+			margin: 24px auto;
+			border: 8px solid #eeeeee;
+			box-sizing: border-box;
+		}
+		.rg_layout {
+			width: 100%;
+			height: auto;
+			background: url(./images/beijng2.jpg) no-repeat center;
+			background-size: 100% 930px;
+			overflow: hidden;
+		}
+	</style>
+	<script src="js/jquery-3.3.1.js"></script>
+	<script>
+		/**
+		 * 表单的校验
+		 * 1.用户名,8-20位
+		 * 2.密码：8-20位
+		 * 3.邮箱：邮箱格式
+		 * 4.姓名：非空
+		 * 5.手机号 ：11位
+		 * 6出生日期：非空
+		 * 7.验证码:,非空
+		 */
+		//用户名校验
+
+
+		$(function () {
+			//提交表单调用
+
+			$("#registerForm").submit(function () {
+				//表单通过，发送ajax请求，提交表单的数据
+				// $.post("route/add", $(this).serialize(), function (data) {
+				//
+				// });
+
+
+			})
+			$.get("category/findAll",{},function (data) {
+				var lis="";
+				for (var i = 0; i <data.length ; i++) {
+					var li='<option value="'+data[i].cid+'">'+data[i].cname+'</option>' ;
+					lis+=li;
+				}
+				$("#cid").html(lis);
+				})
+			});
+
+
+
+	</script>
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+<!-- 头部 end -->
+<div class="rg_layout">
+	<div class="rg_form clearfix">
+		<div class="rg_form_left">
+			<p>景点添加</p>
+			<p>SCENIC ADD</p>
+		</div>
+		<div class="rg_form_center">
+			<div id="errorMsg" style="color: red; text-align: center"></div>
+			<!--注册表单-->
+			<form id="registerForm" action="route/add" method="post" enctype = "multipart/form-data" >
+				<!--提交处理请求的标识符-->
+				<input type="hidden" name="action" value="register" >
+				<table style="margin-top: 25px;">
+					<tr>
+						<td class="td_left">
+							<label for="rname">景点标题</label>
+						</td>
+						<td class="td_right">
+							<textarea rows="3" cols="30"  id="rname" name="rname" placeholder="请输入景点标题"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="cid">分类类型</label>
+						</td>
+						<td class="td_right" >
+							<select name="cid" id="cid" style="margin-left: 42px; width: 80px;height: 25px; line-height: 25px;">
+								<option value="1">门票</option>
+								<option value="2">酒店</option>
+								<option value="2">热门景区</option>
+								<option value="2">国外景区</option>
+								<option value="2">国外景区</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="price">旅行价格</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="price" name="price" placeholder="请输入旅行的价格">
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="theme">主题景点</label>
+						</td>
+						<td class="td_right" >
+							<select name="isThemeTour" id="theme" style="margin-left: 42px;width: 50px;height: 25px; line-height: 25px;">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
+						</td>
+					</tr>
+
+
+					<tr>
+						<td class="td_left">
+							<label for="times">游玩时间</label>
+						</td>
+						<td class="td_right gender">
+							<input type="text" id="times" name="times" placeholder="请输入景点游玩时间">
+
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="tickets">门票</label>
+						</td>
+						<td class="td_right gender">
+							<input type="text" id="tickets" name="tickets" placeholder="请输入景点门票价">
+
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="telephone">景点电话</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="telephone" name="telephone" placeholder="请输入景点电话">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="td_left">
+							<label for="traffic">景点交通</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="traffic" name="traffic" placeholder="请输入景点交通">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="td_left">
+							<label for="development">景点开放时间</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="development" name="development" placeholder="请输入景点开放时间">
+						</td>
+					</tr>
+
+					<tr>
+						<td class="td_left">
+							<label for="routeIntroduce">景点简介</label>
+						</td>
+						<td class="td_right">
+							<textarea rows="4" cols="30" id="routeIntroduce" name="routeIntroduce" placeholder="请输入景点简介"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="introduction">景点详情介绍</label>
+						</td>
+						<td class="td_right">
+							<textarea rows="8" cols="30"  id="introduction" name="introduction" placeholder="请输入景点标题"></textarea>
+
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="rimage">图片</label>
+						</td>
+						<td class="td_right">
+							<input type="file" id="rimage" name="rimage" style="margin-left: 25px;	;padding: 6px 12px;"/>
+
+						</td>
+					</tr>
+
+<!--					<tr>-->
+<!--						<td class="td_left">-->
+<!--							<label for="check">验证码</label>-->
+<!--						</td>-->
+<!--						<td class="td_right check">-->
+<!--							<input type="text" id="check" name="check" class="check">-->
+<!--							<img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">-->
+<!--							<script type="text/javascript">-->
+<!--								//图片点击事件-->
+<!--								function changeCheckCode(img) {-->
+<!--									img.src="checkCode?"+new Date().getTime();-->
+<!--								}-->
+<!--							</script>-->
+<!--						</td>-->
+<!--					</tr>-->
+					<tr>
+						<td class="td_left">
+						</td>
+						<td class="td_right check">
+							<input type="submit"  class="submit" value="添加"  style="width: 90px; border-radius: 5px;margin-right: 10px;">
+							<input type="reset" class="submit" value="重置" style="width: 90px; border-radius: 5px;">
+							<span id="msg" style="color: red;"></span>
+						</td>
+					</tr>
+				</table>
+			</form>
+	</div>
+		<div class="rg_form_right">
+			<p>
+<!--				已有账号？-->
+				<a href="scenic.html" style="margin-right: 20px; font-size: 16px;">返回</a>
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

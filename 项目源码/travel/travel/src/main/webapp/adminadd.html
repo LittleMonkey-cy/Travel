@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>管理员增加</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" href="css/register.css">
+	<!--导入jquery-->
+	<script src="js/jquery-3.3.1.js"></script>
+	<script>
+		/**
+		 * 表单的校验
+		 * 1.用户名,8-20位
+		 * 2.密码：8-20位
+		 * 3.邮箱：邮箱格式
+		 * 4.姓名：非空
+		 * 5.手机号 ：11位
+		 * 6出生日期：非空
+		 * 7.验证码:,非空
+		 */
+		//用户名校验
+		function checkUsername() {
+			// 1.获取用户名值
+			var username= $("#username").val();
+			// 2.定义正则表达式
+			var reg_username=/^\w{5,20}$/;
+			// 3.判断，给提示信息
+			var flag= reg_username.test(username);
+			if (flag){
+				//用户合法
+				$("#username").css("border","");
+
+			}else {
+				//用户名非法
+				$("#username").css("border","1px solid red");
+			}
+			return flag;
+		}
+
+		//密码
+		function checkPassword() {
+			// 1.获取用户名值
+			var password= $("#password").val();
+			// 2.定义正则表达式
+			var reg_password=/^\w{5,20}$/;
+			// 3.判断，给提示信息
+			var flag= reg_password.test(password);
+			if (flag){
+				//用户合法
+				$("#password").css("border","");
+
+			}else {
+				//用户名非法
+				$("#password").css("border","1px solid red");
+			}
+			return flag;
+		}
+		//校验邮箱
+		function checkEmail(){
+			//获取邮箱
+			var email= $("#email").val();
+			//正则
+			var reg_email=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+
+			var flag=reg_email.test(email);
+			//判断
+			if (flag){
+				$("#email").css("border","");
+			}else {
+				$("#email").css("border","1px solid red");
+			}
+
+			return flag;
+		}
+
+		//校验姓名
+		function checkName(){
+			//获取邮箱
+			var name= $("#name").val();
+			//正则
+			var reg_name=/^[\u4E00-\u9FA5A-Za-z]+$/;
+
+			var flag=reg_name.test(name);
+			//判断
+			if (flag){
+				$("#name").css("border","");
+			}else {
+				$("#name").css("border","1px solid red");
+			}
+
+			return flag;
+		}
+
+		//校验电话
+		function checkTelephone(){
+			//获取邮箱
+			var telephone= $("#telephone").val();
+			//正则
+			var reg_telephone=/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+
+			var flag=reg_telephone.test(telephone);
+			//判断
+			if (flag){
+				$("#telephone").css("border","");
+			}else {
+				$("#telephone").css("border","1px solid red");
+			}
+
+			return flag;
+		}
+
+
+		//校验生日
+		function checkBirthday(){
+			//获取邮箱
+			var birthday= $("#birthday").val();
+			//正则
+			var reg_birthday=/^\d{4}-\d{1,2}-\d{1,2}$/;
+
+			var flag=reg_birthday.test(birthday);
+			//判断
+			if (flag){
+				$("#birthday").css("border","");
+			}else {
+				$("#birthday").css("border","1px solid red");
+			}
+
+			return flag;
+		}
+
+		//校验验证码
+		function checkCheck(){
+			//获取邮箱
+			var check= $("#check").val();
+			//正则
+			var reg_check=/^[A-Za-z0-9]+$/;
+
+			var flag=reg_check.test(check);
+			//判断
+			if (flag){
+				$("#check").css("border","");
+			}else {
+				$("#check").css("border","1px solid red");
+			}
+			return flag;
+		}
+
+
+		$(function () {
+			//提交表单调用
+			$("#registerForm").submit(function () {
+				if (checkUsername() &&checkPassword()&&checkEmail()&&checkName()&&checkTelephone()&&checkBirthday()&&checkCheck()){
+					//表单通过，发送ajax请求，提交表单的数据
+					$.post("admin/AddAdmin",$(this).serialize(),function (data) {
+						//处理服务器响应数据 data
+						if (data.flag){
+							//注册成功，页面跳转
+							alert("添加成功");
+							location.reload();
+						}else
+						{
+							// $("#errorMsg").html(data.errorMsg);
+							alert(data.errorMsg);
+						}
+					});
+				}
+				return false;
+
+			});
+			//失去焦点，调用
+			$("#username").blur(checkUsername);
+			$("#password").blur(checkPassword);
+			$("#email").blur(checkEmail);
+			$("#name").blur(checkName);
+			$("#telephone").blur(checkTelephone);
+			$("#birthday").blur(checkBirthday);
+			$("#check").blur(checkCheck);
+
+		});
+
+	</script>
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+<!-- 头部 end -->
+<div class="rg_layout">
+	<div class="rg_form clearfix">
+		<div class="rg_form_left">
+			<p>管理员添加</p>
+			<p>ADMIN ADD</p>
+		</div>
+		<div class="rg_form_center">
+			<div id="errorMsg" style="color: red; text-align: center"></div>
+			<!--注册表单-->
+			<form id="registerForm" action="user">
+				<!--提交处理请求的标识符-->
+				<input type="hidden" name="action" value="register">
+				<table style="margin-top: 25px;">
+					<tr>
+						<td class="td_left">
+							<label for="username">用户名</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="username" name="username" placeholder="请输入账号">
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="password">密码</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="password" name="password" placeholder="请输入密码">
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="email">Email</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="email" name="email" placeholder="请输入Email">
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="name">姓名</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="name" name="name" placeholder="请输入真实姓名">
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="telephone">手机号</label>
+						</td>
+						<td class="td_right">
+							<input type="text" id="telephone" name="consphone" placeholder="请输入您的手机号">
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="sex">性别</label>
+						</td>
+						<td class="td_right gender">
+							<input type="radio" id="sex" name="sex" value="男" checked> 男
+							<input type="radio" name="sex" value="女"> 女
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left">
+							<label for="birthday">出生日期</label>
+						</td>
+						<td class="td_right">
+							<input type="date" id="birthday" name="birthday" placeholder="年/月/日">
+						</td>
+					</tr>
+<!--					<tr>-->
+<!--						<td class="td_left">-->
+<!--							<label for="check">验证码</label>-->
+<!--						</td>-->
+<!--						<td class="td_right check">-->
+<!--							<input type="text" id="check" name="check" class="check">-->
+<!--							<img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">-->
+<!--							<script type="text/javascript">-->
+<!--								//图片点击事件-->
+<!--								function changeCheckCode(img) {-->
+<!--									img.src="checkCode?"+new Date().getTime();-->
+<!--								}-->
+<!--							</script>-->
+<!--						</td>-->
+<!--					</tr>-->
+					<tr>
+						<td class="td_left">
+						</td>
+						<td class="td_right check">
+							<input type="submit" class="submit" value="添加" style="width: 90px; border-radius: 5px;margin-right: 10px;">
+							<input type="reset" class="submit" value="重置" style="width: 90px; border-radius: 5px;">
+							<span id="msg" style="color: red;"></span>
+						</td>
+					</tr>
+				</table>
+			</form>
+	</div>
+		<div class="rg_form_right">
+			<p>
+<!--				已有账号？-->
+				<a href="admin.html" style="margin-right: 20px; font-size: 16px;">返回</a>
+			</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

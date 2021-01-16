@@ -1,0 +1,55 @@
+package cn.love.travel.pojo;
+
+import java.io.Serializable;
+
+/**
+* @author 陈钰
+* @Description  分类实体类
+* @Date 7:45 2020/12/20
+* @Param
+* @return
+**/
+public class Category implements Serializable {
+    /**
+     * 分类id
+     */
+    private int cid;
+    /**
+     * 分类名称
+     */
+    private String cname;
+
+    public Category() {
+    }
+
+    public Category(int cid, String cname) {
+        this.cid = cid;
+        this.cname = cname;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "cid=" + cid +
+                ", cname='" + cname + '\'' +
+                '}';
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+
+}

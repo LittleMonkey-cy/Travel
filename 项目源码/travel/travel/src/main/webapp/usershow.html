@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息管理</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <!--    <link rel="stylesheet" href="css/common.css">-->
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="js/jquery.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/alert.js"></script>
+    <script src="js/include.js"></script>
+    <script src="js/getParameter.js"></script>
+    <style>
+        /*#EAF2D3*/
+        /*body{*/
+        /*    background-color: #fFfFe8 !important;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="doc">
+    <header id="adminheader"></header>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="mangement"></div>
+
+            <!--左边菜单栏-->
+            <div class="col-sm-10">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading ">
+                        用户信息管理
+                    </div>
+                    <div style="margin-top: 15px; margin-right: 14px; float: right">
+                        <button class="btn btn-primary" href="javascript:void(0); " id="DelAll">批量删除</button>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" class="form-inline">
+                            <div class="form-group">
+                                <label for="uname">名称</label>
+                                <input type="text" class="form-control" id="uname" placeholder="请输入名称">
+                            </div>
+
+                            <div class="form-group">
+                                <a href="javascript:;" id="seach_btn" class="btn btn-default glyphicon glyphicon-search"
+                                   style="padding-bottom: 7px;">&nbsp;搜索</button></a>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!--
+                    列表展示
+                -->
+                <div class="table-responsive">
+                    <form id="registerForm" action="user">
+                        <table border="1" class="table table-bordered table-hover " id="admin">
+                            <tr class="success">
+                                <th><input type="checkbox" id="firstCb"></th>
+                                <th>编号</th>
+                                <th>用户名</th>
+                                <th>密码</th>
+                                <th>姓名</th>
+                                <th>生日</th>
+                                <th>性别</th>
+                                <th>电话</th>
+                                <th>邮箱</th>
+                                <th>操作</th>
+                            </tr>
+
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <td>1</td>
+                                <td>张三</td>
+                                <td>123</td>
+                                <td>张三</td>
+                                <td>2020-12-23</td>
+                                <td>男</td>
+                                <td>130120110111</td>
+                                <td>zs@qq.com</td>
+                                <td id="btn"><a class="btn btn-default  glyphicon glyphicon-pencil"
+                                                href="update.html"></a>&nbsp;
+                                    <a class="btn btn-default  glyphicon glyphicon-plus" href="" id="del"></a>
+                                    &nbsp;<a class="btn btn-default  glyphicon glyphicon-trash" href=""></a></td>
+                            </tr>
+
+                        </table>
+                    </form>
+                    <div class="page_num_inf" style="font-size: 19px;color: #878787;margin-bottom: 15px; ">
+                        <i style="float: left; width: 4px; background-color: #878787; height: 20px;margin-top: 5px; margin-right: 10px;"></i>
+                        共
+                        <span id="totalPage" style="color: #ff4848;">12</span>页<span id="totalCount"
+                                                                                     style="color: #ff4848;">132</span>条
+                    </div>
+                    <div class="pageNum">
+                        <ul id="pageNum">
+                            <li><a href="">首页</a></li>
+                            <li class="threeword"><a href="#">上一页</a></li>
+                            <li class="curPage"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+
+                            <li class="threeword"><a href="javascript:;">首页</a></li>
+                            <li class="threeword"><a href="javascript:;">尾页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 底部页脚部分 -->
+        <div class="footer">
+            <p class="text-center">
+            </p>
+        </div>
+    </div>
+    <script>
+
+        $(function () {
+            //加载完发送ajax请求
+            var uname = getParameter("uname");
+            if (uname) {
+                uname = window.decodeURIComponent(uname);
+            }
+            Laod(null, uname);
+        })
+
+        function Laod(currentPage, uname) {
+            $.get("user/pageQuery", {currentPage: currentPage, uname: uname}, function (pb) {
+                // 解析page数据
+                // 分页工具条
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+                var lis = "";
+
+                var fristPage = '<li  onclick="javascript:Laod(1,\'' + name + '\')"><a href="javascript:void(0)">首页</a></li>';
+
+                var beforeNum = pb.currentPage - 1;
+                if (beforeNum <= 0) {
+                    beforeNum = 1;
+                }
+                var beforePage = '<li class="threeword" onclick="javascript:Laod(' + beforeNum + ',\'' + name + '\')"><a href="javascript:void(0)">上一页</a></li>';
+
+                lis += fristPage;
+                lis += beforePage;
+
+                //定义开始和结束的位置
+                var begin;
+                var end;
+
+                //显示10页面
+                if (pb.totalPage < 10) {
+                    //小于10
+                    begin = 1;
+                    end = pb.totalPage;
+                } else {
+                    // 超过10页
+                    begin = pb.currentPage - 5;
+                    end = pb.currentPage + 4;
+                    if (begin < 1) {
+                        begin = 1
+                        end = begin + 9;
+                    }
+                    if (end > pb.totalPage) {
+                        end = pb.totalPage;
+                        begin = end - 9;
+                    }
+                }
+                for (var i = begin; i <= end; i++) {
+                    var li
+                    if (i == pb.currentPage) {
+                        li = '<li class="curPage" onclick="javascript:Laod(' + i + ',\'' + uname + '\')"><a href="javascript:void(0)">' + i + '</a></li>';
+
+                    } else {
+                        li = '<li onclick="javascript:Laod(' + i + ',\'' + uname + '\')"><a href="javascript:void(0)">' + i + '</a></li>';
+                    }
+                    lis += li;
+                }
+
+
+                // for (var i = 1; i <=pb.totalPage ; i++) {
+                //
+                // }
+                var nextNum = pb.currentPage + 1;
+                if (nextNum >= pb.totalPage) {
+                    nextNum = pb.totalPage;
+                }
+
+                var nextPage = '<li class="threeword" onclick="javascript:Laod(' + nextNum + ',\'' + uname + '\')"><a href="javascript:;">下一页</a></li>';
+                var lastPage = '<li class="threeword" onclick="javascript:Laod(' + pb.totalPage + ',\'' + uname + '\')"><a href="javascript:;">尾页</a></li>';
+
+                lis += nextPage;
+                lis += lastPage;
+
+                $("#pageNum").html(lis);
+
+
+                //刷新
+                var lis = "";
+                var table = '   <tr class="success">\n' +
+
+                    '                          <th><input type="checkbox" id="ckAll"></th>' +
+                    '<th>编号</th>\n' +
+                    '                        <th>姓名</th>\n' +
+                    '                        <th>电话</th>\n' +
+                    '                        <th>性别</th>\n' +
+                    '                        <th>生日</th>\n' +
+                    '                        <th>邮箱</th>\n' +
+                    '                        <th>操作</th>\n' +
+                    '                    </tr>';
+                lis += table;
+                // alert(pb.list.length);
+                // var num=pb.list.length;
+                var num = (pb.currentPage - 1) * pb.pageSize
+                for (var i = 0; i < pb.list.length; i++) {
+
+                    var start = i + 1;
+
+                    var user = pb.list[i];
+                    // alert(list);
+                    var li = '<tr>\n' +
+                        '                    <th><input type="checkbox" name="uid" value="' + user.uid + '"></th>' +
+                        '  <td>' + [num + (i + 1)] + '</td>\n' +
+                        '                    <td>' + user.name + '</td>\n' +
+                        '                    <td>' + user.telephone + '</td>\n' +
+                        '                    <td>' + user.sex + '</td>\n' +
+                        '                    <td>' + user.birthday + '</td>\n' +
+                        '                    <td>' + user.email + '</td>\n' +
+                        '                    <td><a class="btn btn-default  glyphicon glyphicon-pencil" href="userInfo.html?uid=' + user.uid + '"></a>' +
+                        '&nbsp;\n' +
+                        '                        &nbsp;<button onclick="Delete(' + user.uid + ')"  type="button" class="btn btn-default  glyphicon glyphicon-trash" > </button></td>\n' +
+                        '                </tr>';
+                    lis += li;
+                }
+                $("#admin").html(lis);
+                // 批量删除事件
+                document.getElementById("DelAll").onclick = function () {
+
+                    var flag = false;
+                    var cbs = document.getElementsByName("uid");
+                    for (var i = 0; i < cbs.length; i++) {
+                        if (cbs[i].checked) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        myConfirm('系统确认框', '您真的要删除吗？', function (r) {
+                            if (r) {
+                                $.post("user/delall", $("#registerForm").serialize(), function () {
+                                    location.reload();
+                                })
+                            }
+                        })
+                    } else {
+                        alert("请选择删除对象");
+                    }
+
+
+                }
+                // 全选全不选
+                // 1.获取第一个id="firstCb"
+                document.getElementById("ckAll").onclick = function () {
+                    //获取所有的cb
+                    var cbs = document.getElementsByName("uid");
+
+                    for (var i = 0; i < cbs.length; i++) {
+                        // 4.设置cbs[i]的checked状态==firstCb.checked
+                        cbs[i].checked = ckAll.checked;
+                    }
+                }
+            })
+            window.scrollTo(0, 0);
+
+            //给搜索按钮绑定事件,获取内容
+            $("#seach_btn").click(function () {
+                var uname = $("#uname").val();
+                location.href = "http://localhost:8080/travel/usershow.html?uname=" + uname;
+            })
+
+        }
+
+        function Delete(uid) {
+            myConfirm('系统确认框', '您真的忍心删除我吗？', function (r) {
+                if (r) {
+                    $.get("user/delUser", {uid: uid}, function () {
+                        location.reload();
+                    })
+                }
+            });
+        }
+    </script>
+</div>
+</div>
+</body>
+</html>

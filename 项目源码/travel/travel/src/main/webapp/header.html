@@ -1,0 +1,143 @@
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="js/jquery.js"></script>
+<script src="js/jquery-3.3.1.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/getParameter.js"></script>
+<script type="text/javascript" src="js/alert.js"></script>
+
+<script>
+    $(function () {
+        $.get("findUserServlet",{},function (data) {
+
+            var msg=data.username+" 登录";
+            $("#span_username").html(msg);
+
+
+        });
+        //分类数据
+       $.get("category/findAll",{},function (data) {
+           var lis='<li class="nav-active"><a href="index.html">首页</a></li>';
+           //遍历数组
+
+           for (var i=0;i<data.length;i++){
+
+               var li='<li><a href="route_list.html?cid='+data[i].cid+'">'+data[i].cname+'</a></li>';
+               lis+=li;
+           }
+           lis+='<li><a href="favoriterank.html">收藏排行榜</a></li>';
+           $("#category").html(lis);
+
+           $("#category li").click(function() {
+               $(this).siblings('lis').removeClass('nav-active');
+               $(this).addClass('nav-active');
+           });
+           $(document).ready(function(){
+               $("#category li a").each(function(){
+                   $this = $(this);
+                   if($this[0].href==String(window.location)){
+                       $("#category li").removeClass("nav-active");
+                       $this.parent().addClass("nav-active");
+                   }
+               });
+           });
+
+
+       });
+
+       // 查询数据
+        $("#seach_btn").click(function () {
+        var rname = $("#search_input").val();
+        var cid=getParameter("cid");
+
+        location.href="http://localhost:8080/travel/route_list.html?cid="+cid+"&rname="+rname;
+    })
+
+    });
+    // 判断用户是否登录
+    $("#user").click(function () {
+        $.get("findUserServlet",{},function (user) {
+
+            if(user){
+                // alert(user.getUid());
+                window.location.href="http://localhost:8080/travel/user.html?uid="+user.uid;
+            }else{
+                myConfirm('系统确认框框','您尚未登录，登录后才能进入个人中心',function(r){
+                    if(r){
+                        window.location.href="http://localhost:8080/travel/login.html";
+                    }
+                });
+            }
+        })
+    })
+
+    $("#myFavorite").click(function () {
+        $.get("findUserServlet",{},function (user) {
+            if(user){
+                window.location.href="http://localhost:8080/travel/myfavorite.html";
+            }else{
+                myConfirm('系统确认框','用户您尚未登录，登录之后才能收藏哟',function(r){
+                    if(r){
+                        window.location.href="http://localhost:8080/travel/login.html";
+                    }
+                });
+            }
+        })
+    })
+
+</script>
+
+
+
+<!-- 头部 start -->
+<header id="header">
+    <div class="top_banner">
+        <img src="images/banner_top.jpg" width="100%" height="150px" alt="404" >
+    </div>
+    <div class="shortcut" style="margin-top: 20px;">
+        <!-- 未登录状态  -->
+       <div class="login_out">
+            <a href="login.html">登录</a>
+            <a href="register.html">注册</a>
+
+            <!-- 小图标样式设置 -->
+
+        </div>
+        <!-- 登录状态  -->
+        <div class="login">
+            <a href="#" class="glyphicon glyphicon-user" id="user" ></a>
+            &nbsp;<span id="span_username"></span>
+            <a href="#" class="collection" id="myFavorite" >我的收藏</a>
+            <a href="javascript:location.href='exitServlet'">退出</a>
+        </div>
+    </div>
+    <div class="header_wrap">
+        <div class="topbar">
+            <div class="logo">
+                <!--              <a href="/"><img src="images/logo.jpg" alt=""></a>-->
+            </div>
+            <div class="search">
+                <input name="" id="search_input" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                <a href="javascript:;" id="seach_btn" class="search-button">搜索</a>
+            </div>
+            <div class="hottel">
+                <div class="hot_pic">
+                    <img src="images/hot_tel.jpg" alt="">
+                </div>
+                <div class="hot_tel">
+                    <p class="hot_time">客服热线(9:00-18:00)</p>
+                    <p class="hot_num">13290537561</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- 头部 end -->
+<!-- 首页导航 -->
+<div class="navitem">
+    <ul class="nav" id="category">
+    </ul>
+</div>
+    

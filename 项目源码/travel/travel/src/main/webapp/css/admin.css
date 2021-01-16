@@ -1,0 +1,50 @@
+
+#exit{
+    margin-right: 20px;
+}
+
+#control_strip li{
+    list-style: none;
+
+}
+#control_strip li a{
+   font-size: 20px;
+
+}
+
+#sub1,#sub2,#sub3,#sub4{
+    padding-left: 20px;
+
+}
+.inner{
+    border: 1px solid red;
+}
+.success{
+    background-color: #dff0d8;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding-left: 30px;
+}
+td{
+    text-align: center;
+}
+.table th{
+    text-align: center;
+
+    vertical-align: middle!important;
+
+}
+
+
+
+/* 小屏幕（平板，大于等于 768px） */
+@media (min-width:768px)
+    {
+    #control_strip{
+        width: 250px;
+        margin-top: 51px;
+        position: absolute;
+        z-index: 1;
+    }
+}

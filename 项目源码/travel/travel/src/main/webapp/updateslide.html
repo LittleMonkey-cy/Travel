@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>轮播图修改</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" href="css/register.css">
+	<script src="js/jquery-3.3.1.js"></script>
+	<script src="js/alert.js"></script>
+	<script src="js/getParameter.js"></script>
+	<!--导入布局js，共享header和footer-->
+	<script type="text/javascript" src="js/include.js"></script>
+	<!--导入jquery-->
+	<style>
+
+		.rg_layout .rg_form {
+			height: 534px;
+			background-color: #fff;
+			margin: 24px auto;
+			border: 8px solid #eeeeee;
+			box-sizing: border-box;
+		}
+		.rg_layout {
+			width: 100%;
+			height: 625PX;
+			background: url(./images/beijng2.jpg) no-repeat center;
+			background-size: 100% 780px;
+			overflow: hidden;
+		}
+	</style>
+	<script src="js/jquery-3.3.1.js"></script>
+	<script>
+		var rid = getParameter("rid");
+		// alert(rid);
+		$.get("route/findOne",{rid:rid},function (route) {
+			// alert(route.rname);
+			var lis = ' <input type="hidden" name="rid" value="' + rid + '" id="hidden">';
+			var li='<tr>\n' +
+					'<td class="td_left">\n' +
+					'<label for="bigPic" style="font-size: 15px;">轮播图片</label>\n' +
+					'</td>\n' +
+					'\t\t\t\t\t\t<td class="td_right">\n' +
+					'\t\t\t\t\t\t\t<input type="file" id="bigPic" name="bigPic" style="margin-left: 40px;;padding: 10px 12px;"/>\n' +
+					'\n' +
+					'\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t</tr>';
+			lis+=li;
+			var sub='<tr>\n' +
+					'\t\t\t\t\t\t<td class="td_left">\n' +
+					'\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t\t<td class="td_right check">\n' +
+					'\t\t\t\t\t\t\t<input type="submit"  class="submit" value="更改"  style="width: 90px; border-radius: 5px;margin-right: 10px; margin-top: 60px;">\n' +
+					'\t\t\t\t\t\t\t\t<span id="msg" style="color: red;"></span>\n' +
+					'\t\t\t\t\t\t</td>\n' +
+					'\t\t\t\t\t</tr>';
+			lis+=sub;
+			$("#show").html(lis);
+		})
+
+	</script>
+</head>
+<body>
+<!--引入头部-->
+<!--<div id="header"></div>-->
+<!-- 头部 end -->
+<div class="rg_layout">
+	<div class="rg_form clearfix">
+		<div class="rg_form_left">
+			<p>轮播图更改</p>
+			<p style="margin-top: 10px;">SHIDESHOW </p>
+		</div>
+		<div class="rg_form_center">
+			<div id="errorMsg" style="color: red; text-align: center"></div>
+			<!--注册表单-->
+			<form id="registerForm" action="route/updateslide" method="post" enctype = "multipart/form-data" >
+				<!--提交处理请求的标识符-->
+				<input type="hidden" name="action" value="register" >
+				<table style="margin-top: 140px; " id="show" >
+
+					<tr>
+						<td class="td_left">
+							<label for="bigPic" style="font-size: 18px;">大图片</label>
+						</td>
+						<td class="td_right">
+							<input type="file" id="bigPic" name="bigPic" style="margin-left: 40px;	;padding: 10px 12px;"/>
+
+						</td>
+					</tr>
+
+					<tr>
+						<td class="td_left">
+							<label for="smallPic"  style="font-size: 18px;">小图片</label>
+						</td>
+						<td class="td_right">
+							<input type="file" id="smallPic" name="smallPic" style="margin-left: 40px;	;padding: 10px 12px;"/>
+
+						</td>
+					</tr>
+
+<!--					<tr>-->
+<!--						<td class="td_left">-->
+<!--							<label for="check">验证码</label>-->
+<!--						</td>-->
+<!--						<td class="td_right check">-->
+<!--							<input type="text" id="check" name="check" class="check">-->
+<!--							<img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">-->
+<!--							<script type="text/javascript">-->
+<!--								//图片点击事件-->
+<!--								function changeCheckCode(img) {-->
+<!--									img.src="checkCode?"+new Date().getTime();-->
+<!--								}-->
+<!--							</script>-->
+<!--						</td>-->
+<!--					</tr>-->
+					<tr>
+						<td class="td_left">
+						</td>
+						<td class="td_right check">
+							<input type="submit"  class="submit" value="添加"  style="width: 90px; border-radius: 5px;margin-right: 10px; margin-top: 50px;">
+								<span id="msg" style="color: red;"></span>
+						</td>
+					</tr>
+				</table>
+			</form>
+	</div>
+		<div class="rg_form_right">
+			<p>
+				<a href="slideshow.html" style="margin-right: 40px; font-size: 16px;">返回</a>
+			</p>
+		</div>
+	</div>
+</div>
+<div id="footer"></div>
+</body>
+</html>
